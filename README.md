@@ -6,7 +6,7 @@
 
 ![til](./media/Fig1-overview.png)
 
-The is a working implementation of `EvoFlow-RNA`, a high-throughput model capable of generating novel, diverse and naturalistic non-coding RNA sequences. In this version, we only release the mini-sized model (33m). A future version will include additional model sizes and further functionality.
+The inference suite for`EvoFlow-RNA`, a high-throughput model capable of generating novel, diverse and naturalistic non-coding RNA sequences. In this version, we only release the mini-sized model (33m). A future version will include additional model sizes and further functionality.
 
 ## Installation
 
