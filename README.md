@@ -10,7 +10,7 @@ The inference suite for`EvoFlow-RNA`, a high-throughput model capable of generat
 
 ## Installation
 
-We use CUDA 12.5 and Python 3.11 for this project. An additional key dependency is Flash-Attention v2. You can install our environment via `conda`.
+We use `CUDA 12.5` and `Python 3.11` for this project. An additional key dependency is Flash-Attention v2. You can install our environment via `conda`.
 
 ```bash
 # clone project
