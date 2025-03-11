@@ -7,7 +7,7 @@ from src.rinalmo.data.alphabet import Alphabet
 from src.rinalmo.model.model import RiNALMo
 from src.rinalmo.config import model_config
 
-DEFAULT_CACHE_DIR = "/home/abwer/evoflow-rna/src/rinalmo/pretrained/" #Path.home() / ".cache" / "rinalmo_pretrained"
+DEFAULT_CACHE_DIR = Path.home() / ".cache" / "rinalmo_pretrained"
 
 with open(Path(__file__).parent / "resources" / "model2gdisk.json", "r") as f:
     MODEL_TO_GDISK_ID = json.load(f)

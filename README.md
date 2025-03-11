@@ -2,7 +2,7 @@
 
 # EvoFlow-RNA 🧬 | A non-coding RNA masked diffusion model
 
-[[Paper]](https://www.biorxiv.org/content/10.1101/2025.02.25.639942v2)[[Blog]](https://atombioworks.com/news/evoflow-rna-masked-discrete-diffusion/)
+[[Paper]](https://www.biorxiv.org/content/10.1101/2025.02.25.639942v2) [[Blog]](https://atombioworks.com/news/evoflow-rna-masked-discrete-diffusion/)
 
 ![til](./media/Fig1-overview.png)
 
@@ -14,7 +14,7 @@ We use CUDA 12.5 and Python 3.11 for this project. An additional key dependency 
 
 ```bash
 # clone project
-git clone --recursive https://url/to/this/repo/evoflow-rna.git
+git clone https://url/to/this/repo/evoflow-rna.git
 cd evoflow-rna
 
 # create conda environment
@@ -26,6 +26,8 @@ conda activate evoflow-rna
 ```
 
 If any issues pertaining to `hydra` arise after setting up the environment, just uninstall `hydra-core` and re-install (including dependencies such as `hydra-colorlog`).
+
+NOTE: We will be adding a docker image soon to this repository for streamlined setup!
 
 ## Example
 
@@ -41,7 +43,7 @@ This repository is kept under a `CC-BY-NC 4.0 International license`. All non-co
 
 ## Acknowledgements
 
-We built our repository off of [bytedance/dplm](https://github.com/bytedance/dplm) and their original work in protein sequence design with masked denoising discrete diffusion. We also encourage visiting the [RiNALMo](https://github.com/lbcb-sci/RiNALMo) repository as we absorbed much of their library. Please check out their work!
+We modeled our repository off of [bytedance/dplm](https://github.com/bytedance/dplm) and their original work in protein sequence design with masked denoising discrete diffusion. We also appreciate the [RiNALMo](https://github.com/lbcb-sci/RiNALMo) team for their well-maintained project which we use as a static dependency. Please check them out!
 
 ## Citations
 

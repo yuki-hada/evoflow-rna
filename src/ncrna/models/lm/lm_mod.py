@@ -5,15 +5,19 @@
 
 import torch
 import torch.nn as nn
-from torch.nn import functional as F
 from src.rinalmo.pretrained import get_pretrained_model
-import tqdm
-import math
+from src.rinalmo.config import model_config
+from src.rinalmo.model.model import RiNALMo
+from src.rinalmo.data.alphabet import Alphabet
+
 
 class LM_pretrained(nn.Module):
     def __init__(self):
         super().__init__()
-        self.rm, self.alphabet = get_pretrained_model(model_name='micro-v1', lm_config='micro')#fm.pretrained.rna_fm_t12()
+        # self.rm, self.alphabet = get_pretrained_model(model_name='micro-v1', lm_config='micro')#fm.pretrained.rna_fm_t12()
+        config = model_config('micro')
+        self.rm = RiNALMo(config)
+        self.alphabet = Alphabet(**config['alphabet'])
         self.pad_id = self.alphabet.pad_idx
         self.bos_id = self.alphabet.cls_idx
         self.eos_id = self.alphabet.eos_idx
