@@ -10,6 +10,7 @@ The inference suite for`EvoFlow-RNA`, a high-throughput model capable of generat
 
 ## Installation
 
+### CUDA 12.5 is required
 We use `CUDA 12.5` and `Python 3.11` for this project. An additional key dependency is Flash-Attention v2. You can install our environment via `conda`.
 
 ```bash
@@ -35,7 +36,7 @@ See the `example.ipynb` notebook for usage instructions, such as how to get embe
 
 ## Weights
 
-First download EvoFlow-RNA mini weights and store them in the `~/weights` path for example notebook compatability.
+First download EvoFlow-RNA mini weights (about 0.4GB) and store them in the `~/weights` path for example notebook compatability.
 ```bash
 cd weights
 wget https://zenodo.org/records/15009560/files/mini-v1.ckpt
