@@ -35,8 +35,11 @@ See the `example.ipynb` notebook for usage instructions, such as how to get embe
 
 ## Weights
 
-EvoFlow-RNA mini weights are available [here](https://drive.google.com/drive/folders/16_XFmWFq3fVMK-nOhWUIyo8-1cLoScPm?usp=sharing). Store them in the `~/weights` path for example notebook compatability.
-
+First download EvoFlow-RNA mini weights and store them in the `~/weights` path for example notebook compatability.
+```bash
+cd weights
+wget https://zenodo.org/records/15009560/files/mini-v1.ckpt
+```
 ## License
 
 This repository is kept under a `CC-BY-NC 4.0 International license`. All non-commercial projects are permitted to freely use, adopt, or build upon this work. See LICENSE.md for additional information.
