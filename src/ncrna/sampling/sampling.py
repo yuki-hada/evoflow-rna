@@ -95,7 +95,7 @@ def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t:
 
     # Baseline for how many tokens to update per iteration
     k = ((~fix_mask).sum(-1).float().mean() / num_steps).ceil().int().item()
-    print(k)
+    k = 8
 
     for i in range(1, num_steps + 1):
         # Identify current mask positions
