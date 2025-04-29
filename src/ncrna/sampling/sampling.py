@@ -88,7 +88,7 @@ from torch.cuda.amp import autocast  # ← これが必須
 def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t: t):
     '''Ancestral sampling allowing full sequence optimization under fp16.''' 
     # ensure model and relevant layers run in half precision
-    model = model.half()
+    #model = model.half()
     dt = 1 / num_steps
     # Fixed tokens: keep CLS and EOS unchanged
     fix_mask = (xt == tokenizer.cls_idx) | (xt == tokenizer.eos_idx)
@@ -112,8 +112,8 @@ def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t:
         # Rank by confidence for masking
         masked_score = score.masked_fill(fix_mask_t, float('-inf'))
         unfinished = (mask_t.sum(1, keepdim=True) != 0)
-        if unfinished.sum() == 0:
-            break
+        #if unfinished.sum() == 0:
+        #    break
 
         # Select top-k positions to unmask
         topk_scores, topk_indices = masked_score.topk(k, dim=-1)
