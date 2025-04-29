@@ -82,7 +82,9 @@ def ancestral_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t
     return xt
 
 def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t: t):
-    '''Ancestral sampling allowing full sequence optimization.'''
+    '''Ancestral sampling allowing full sequence optimization under fp16.''' 
+    # ensure model and relevant layers run in half precision
+    model = model.half()
     dt = 1 / num_steps
     # Fixed tokens: keep CLS and EOS unchanged
     fix_mask = (xt == tokenizer.cls_idx) | (xt == tokenizer.eos_idx)
@@ -96,8 +98,9 @@ def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t:
         # Do not update fixed or already unmasked positions
         fix_mask_t = fix_mask | (~mask_t)
 
-        # Model prediction and sampling
-        logits = model(xt)
+        # Model prediction under autocast for fp16 support
+        with autocast():
+            logits = model(xt)
         x0, score = stochastic_sample_from_categorical(logits, temperature=tau)
         # Preserve fixed tokens
         x0[fix_mask_t] = xt[fix_mask_t]
