@@ -10,7 +10,7 @@ import torch.nn as nn
 from src.ncrna.models import register_model
 from omegaconf import OmegaConf
 from src.ncrna.models.lm.model_utils import LoRAConfig, NetConfig, get_net
-from src.ncrna.sampling.sampling import ancestral_sample
+from src.ncrna.sampling.sampling import ancestral_sample, optimize_sample
 from pprint import pprint
 
 
@@ -82,6 +82,19 @@ class EvoFlow(nn.Module):
     def sample(self, xt, steps, tau):
         # Perform sampling
         sampled_xt = ancestral_sample(
+            xt=xt,
+            model=self,
+            tokenizer=self.alphabet,
+            num_steps=steps,
+            tau=tau,
+            kappa_fn=lambda t: t
+        )
+        decoded_seqs = self.alphabet.decode(sampled_xt)
+        pprint(decoded_seqs)
+    
+    def sample_optimized(self, xt, steps, tau):
+        # Perform sampling
+        sampled_xt = optimize_sample(
             xt=xt,
             model=self,
             tokenizer=self.alphabet,
