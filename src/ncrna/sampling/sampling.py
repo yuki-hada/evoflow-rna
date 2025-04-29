@@ -81,8 +81,10 @@ def ancestral_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t
 
     return xt
 
+from torch.cuda.amp import autocast  # ← これが必須
+
 @torch.inference_mode()
-@torch.cuda.amp.autocast()
+@torch.cuda.amp.autocast() 
 def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t: t):
     '''Ancestral sampling allowing full sequence optimization under fp16.''' 
     # ensure model and relevant layers run in half precision
