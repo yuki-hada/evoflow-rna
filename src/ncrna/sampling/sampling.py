@@ -92,6 +92,7 @@ def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t:
     dt = 1 / num_steps
     # Fixed tokens: keep CLS and EOS unchanged
     fix_mask = (xt == tokenizer.cls_idx) | (xt == tokenizer.eos_idx)
+    pending_mask = ~fix_mask
 
     # Baseline for how many tokens to update per iteration
     k = ((~fix_mask).sum(-1).float().mean() / num_steps).ceil().int().item()
@@ -99,7 +100,7 @@ def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t:
 
     for i in range(1, num_steps + 1):
         # Identify current mask positions
-        mask_t = (xt == tokenizer.mask_idx)
+        mask_t     = pending_mask
         # Do not update fixed or already unmasked positions
         fix_mask_t = fix_mask | (~mask_t)
 
@@ -121,7 +122,7 @@ def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t:
         topk_scores, topk_indices = masked_score.topk(k, dim=-1)
         unmask = torch.zeros_like(masked_score, dtype=torch.bool)
         unmask.scatter_(dim=-1, index=topk_indices, src=torch.ones_like(topk_indices, dtype=torch.bool))
-        unmask &= unfinished
+        #unmask &= unfinished
 
         # Update tokens
         xt[unmask] = x0[unmask]
