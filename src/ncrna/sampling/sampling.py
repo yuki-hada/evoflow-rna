@@ -80,3 +80,47 @@ def ancestral_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t
     xt[remaining_mask] = x0[remaining_mask]
 
     return xt
+
+def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t: t):
+    '''Ancestral sampling allowing full sequence optimization.'''
+    dt = 1 / num_steps
+    # Fixed tokens: keep CLS and EOS unchanged
+    fix_mask = (xt == tokenizer.cls_idx) | (xt == tokenizer.eos_idx)
+
+    # Baseline for how many tokens to update per iteration
+    k = ((~fix_mask).sum(-1).float().mean() / num_steps).ceil().int().item()
+
+    for i in range(1, num_steps + 1):
+        # Identify current mask positions
+        mask_t = (xt == tokenizer.mask_idx)
+        # Do not update fixed or already unmasked positions
+        fix_mask_t = fix_mask | (~mask_t)
+
+        # Model prediction and sampling
+        logits = model(xt)
+        x0, score = stochastic_sample_from_categorical(logits, temperature=tau)
+        # Preserve fixed tokens
+        x0[fix_mask_t] = xt[fix_mask_t]
+
+        # Rank by confidence for masking
+        masked_score = score.masked_fill(fix_mask_t, float('-inf'))
+        unfinished = (mask_t.sum(1, keepdim=True) != 0)
+        if unfinished.sum() == 0:
+            break
+
+        # Select top-k positions to unmask
+        topk_scores, topk_indices = masked_score.topk(k, dim=-1)
+        unmask = torch.zeros_like(masked_score, dtype=torch.bool)
+        unmask.scatter_(dim=-1, index=topk_indices, src=torch.ones_like(topk_indices, dtype=torch.bool))
+        unmask &= unfinished
+
+        # Update tokens
+        xt[unmask] = x0[unmask]
+        print(xt[0])
+
+    # Final fill for any remaining mask positions
+    remaining_mask = (xt == tokenizer.mask_idx)
+    print(f'remaining mask: {remaining_mask.sum()}')
+    xt[remaining_mask] = x0[remaining_mask]
+
+    return xt
