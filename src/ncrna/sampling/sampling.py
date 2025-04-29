@@ -113,7 +113,6 @@ def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t:
 
         # Rank by confidence for masking
         masked_score = score.masked_fill(fix_mask_t, float('-inf'))
-        print(masked_score)
         unfinished = (mask_t.sum(1, keepdim=True) != 0)
         #if unfinished.sum() == 0:
         #    break
@@ -126,7 +125,7 @@ def optimize_sample(xt, model, tokenizer, num_steps, tau=0.5, kappa_fn=lambda t:
 
         # Update tokens
         xt[unmask] = x0[unmask]
-        #print(xt[0])
+        print(f"Step {i}: {xt[0]}")
 
     # Final fill for any remaining mask positions
     remaining_mask = (xt == tokenizer.mask_idx)
